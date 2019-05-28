@@ -18,7 +18,7 @@
 // include the library
 #include <LoRaLib.h>
 #include <Wire.h>
-#include <Adafruit_BMP085.h>
+
 
 // create instance of LoRa class using SX1278 module
 // this pinout corresponds to KITE Shield
@@ -28,18 +28,9 @@
 // DIO1 pin:  3
 SX1272 lora = new LoRa(10,2,3);
 
-Adafruit_BMP085 bmp;
-String Altitude;
-String Temperature;
-
 void setup() {
   Serial.begin(9600);
   
-  if (!bmp.begin()) 
-  {
-  Serial.println("BMP180 sensor not found");
-  while (1) {}
-  }
 
   // initialize SX1278 with default settings
   Serial.print(F("Initializing ... "));
@@ -66,20 +57,14 @@ void setup() {
 
 void loop() {
   
-Temperature = bmp.readTemperature();
-Altitude = bmp.readAltitude(101325);
 
   Serial.print("Sending packet ... ");
 
   // you can transmit C-string or Arduino string up to
   // 256 characters long
-  int state = lora.transmit(Temperature);
-  delay (500);
-  int state = lora.transmit(Altitude);
+  int state = lora.transmit("Hello World!");
+ 
 
-  
-
- //int state = lora.transmit(bmp.readAltitude(101325));
 
   // you can also transmit byte array up to 256 bytes long
   
